@@ -24,6 +24,11 @@ func Marshal[R []byte | string](v any) (R, error) {
 	return R(data), err
 }
 
+func MarshalIndent[R []byte | string](v any, prefix, indent string) (R, error) {
+	data, err := json.MarshalIndent(v, prefix, indent)
+	return R(data), err
+}
+
 func Cast[T any](from any) (T, error) {
 	return Unmarshal[T](Dumps(from))
 }
