@@ -2,8 +2,15 @@ package gjson
 
 import (
 	"encoding/json"
+	"fmt"
+
+	"github.com/tidwall/gjson"
 
 	"github.com/geebos/gocraft/gvalue"
+)
+
+var (
+	ErrPathNotFound = fmt.Errorf("path not found")
 )
 
 func Unmarshal[T any, D []byte | string](d D) (T, error) {
@@ -36,4 +43,25 @@ func Cast[T any](from any) (T, error) {
 func Dumps[T any](v T) string {
 	data, _ := Marshal[string](v)
 	return data
+}
+
+// UnmarshalFromPath unmarshal result from data by path.
+func UnmarshalFromPath[T any, D []byte | string](data D, path string) (T, error) {
+	var result gjson.Result
+	switch d := any(data).(type) {
+	case []byte:
+		result = gjson.GetBytes(d, path)
+	case string:
+		result = gjson.Get(d, path)
+	}
+	if !result.Exists() {
+		return gvalue.Zero[T](), fmt.Errorf("`%s` %w", path, ErrPathNotFound)
+	}
+	return Unmarshal[T](result.Raw)
+}
+
+// UnmarshalFromPathWithDefault unmarshal result from data by path.
+func UnmarshalFromPathWithDefault[T any, D []byte | string](data D, path string, val T) T {
+	result, err := UnmarshalFromPath[T](data, path)
+	return gvalue.IfElse(err == nil, result, val)
 }
