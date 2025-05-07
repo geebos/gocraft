@@ -1,6 +1,7 @@
 package gjson
 
 import (
+	"encoding/json"
 	"testing"
 
 	. "github.com/bytedance/mockey"
@@ -76,6 +77,69 @@ func TestUnmarshalFromPathWithDefault(t *testing.T) {
 		PatchConvey("default", func() {
 			res := UnmarshalFromPathWithDefault[int](`{"data":"1"}`, "data", 2)
 			So(res, ShouldEqual, 2)
+		})
+	})
+}
+
+func TestUnmarshal(t *testing.T) {
+	PatchConvey("TestUnmarshal", t, func() {
+		PatchConvey("use number", func() {
+			data := `{"number":1234}`
+			PatchConvey("with options", func() {
+				res, err := Unmarshal[map[string]interface{}](data, WithUseNumber())
+				So(err, ShouldBeNil)
+				So(res, ShouldResemble, map[string]interface{}{
+					"number": json.Number("1234"),
+				})
+			})
+			PatchConvey("without options", func() {
+				res, err := Unmarshal[map[string]interface{}](data)
+				So(err, ShouldBeNil)
+				So(res, ShouldResemble, map[string]interface{}{
+					"number": float64(1234),
+				})
+			})
+		})
+
+		PatchConvey("disable unknown fields", func() {
+			data := `{"number":1234,"unknown":1234}`
+			type TestStruct struct {
+				Number int64 `json:"number"`
+			}
+			PatchConvey("with options", func() {
+				res, err := Unmarshal[TestStruct](data, WithDisableUnknownFields())
+				So(err, ShouldNotBeNil)
+				So(err.Error(), ShouldContainSubstring, "json: unknown field")
+				So(res, ShouldResemble, TestStruct{Number: 1234})
+			})
+			PatchConvey("without options", func() {
+				res, err := Unmarshal[TestStruct](data)
+				So(err, ShouldBeNil)
+				So(res, ShouldResemble, TestStruct{Number: 1234})
+			})
+		})
+	})
+}
+
+func TestMarshal(t *testing.T) {
+	PatchConvey("TestMarshal", t, func() {
+		v := map[string]interface{}{
+			"html":  "&",
+			"field": "test",
+		}
+		PatchConvey("with options", func() {
+			data, err := Marshal[string](v, WithEscapeHtml(false), WithIndent("-", "  "))
+			So(err, ShouldBeNil)
+			So(data, ShouldEqual, `{
+-  "field": "test",
+-  "html": "&"
+-}
+`)
+		})
+		PatchConvey("without options", func() {
+			data, err := Marshal[string](v)
+			So(err, ShouldBeNil)
+			So(data, ShouldEqual, `{"field":"test","html":"\u0026"}`)
 		})
 	})
 }

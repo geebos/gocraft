@@ -13,16 +13,40 @@ var (
 	ErrPathNotFound = fmt.Errorf("path not found")
 )
 
-func Unmarshal[T any, D ~[]byte | ~string](d D) (T, error) {
+func Unmarshal[T any, D ~[]byte | ~string](d D, opts ...DecodeOption) (T, error) {
 	var data = []byte(d)
-
 	result := gvalue.Zero[T]()
+	if len(opts) > 0 {
+		return result, unmarshalWithOptions(data, &result, opts)
+	}
 	return result, json.Unmarshal(data, &result)
 }
 
-func Marshal[R ~[]byte | ~string](v any) (R, error) {
-	data, err := json.Marshal(v)
+func unmarshalWithOptions(data []byte, ins any, opts []DecodeOption) error {
+	var opt _option
+	for _, fn := range opts {
+		opt = fn(opt)
+	}
+	return opt.Decode(data, ins)
+}
+
+func Marshal[R ~[]byte | ~string](v any, opts ...EncodeOption) (R, error) {
+	var err error
+	var data []byte
+	if len(opts) == 0 {
+		data, err = json.Marshal(v)
+	} else {
+		data, err = marshalWithOptions(v, opts)
+	}
 	return R(data), err
+}
+
+func marshalWithOptions(v any, opts []EncodeOption) ([]byte, error) {
+	var opt _option
+	for _, fn := range opts {
+		opt = fn(opt)
+	}
+	return opt.Encode(v)
 }
 
 func MarshalIndent[R ~[]byte | ~string](v any, prefix, indent string) (R, error) {
