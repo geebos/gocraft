@@ -1,6 +1,6 @@
 module github.com/geebos/gocraft
 
-go 1.18.0
+go 1.18
 
 require (
 	github.com/bytedance/mockey v1.2.14
