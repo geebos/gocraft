@@ -2,7 +2,8 @@ name: Build & Deploy Docs (gopages + custom home)
 
 on:
   push:
-    branches: ["main"]
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 permissions:
