@@ -17,18 +17,29 @@ type _option struct {
 	Indent       *string
 }
 
-// EncodeOption defines the type for encoding configuration functions
+// EncodeOption is a function that configures JSON encoding behavior.
+// Use the With* functions to create EncodeOption values.
 type EncodeOption func(opt _option) _option
 
-// DecodeOption defines the type for decoding configuration functions
+// DecodeOption is a function that configures JSON decoding behavior.
+// Use the With* functions to create DecodeOption values.
 type DecodeOption func(opt _option) _option
 
-// WithUseNumber enables strict number parsing mode
-// When enabled, decoder will use json.Number type instead of float64
-// This preserves numeric precision but requires explicit type conversion
-// Example usage:
+// WithUseNumber configures the decoder to use [json.Number] instead of float64
+// for JSON numbers.
 //
-//	Unmarshal(data, WithUseNumber())
+// This is useful when you need to preserve the exact numeric representation,
+// especially for large integers that would lose precision when converted to float64.
+//
+// When enabled, numeric values decoded into interface{} will be of type
+// json.Number, which can be converted to int64 or float64 as needed.
+//
+// Example:
+//
+//	data := `{"id": 9007199254740993}`
+//	result, err := Unmarshal[map[string]any](data, WithUseNumber())
+//	num := result["id"].(json.Number)
+//	id, _ := num.Int64() // preserves precision
 func WithUseNumber() DecodeOption {
 	return func(opt _option) _option {
 		opt.UseNumber = gvalue.Ptr(true)
@@ -36,10 +47,21 @@ func WithUseNumber() DecodeOption {
 	}
 }
 
-// WithDisableUnknownFields enables strict field validation
-// When enabled, decoder returns error if JSON contains unknown fields
-// Prevents silent ignoring of typos in field names
-// Recommended for API request parsing
+// WithDisableUnknownFields configures the decoder to return an error when
+// the JSON contains fields that do not have corresponding struct fields.
+//
+// This is useful for strict API validation where you want to detect typos
+// or unexpected fields in incoming JSON data.
+//
+// Example:
+//
+//	type User struct {
+//	    Name string `json:"name"`
+//	}
+//
+//	data := `{"name": "John", "unknown_field": 123}`
+//	_, err := Unmarshal[User](data, WithDisableUnknownFields())
+//	// err: json: unknown field "unknown_field"
 func WithDisableUnknownFields() DecodeOption {
 	return func(opt _option) _option {
 		opt.DisableUnknownFields = gvalue.Ptr(true)
@@ -47,8 +69,24 @@ func WithDisableUnknownFields() DecodeOption {
 	}
 }
 
-// WithEscapeHtml controls HTML escaping in JSON encoding
-// @param escape - true to enable HTML escaping (default), false to disable
+// WithEscapeHtml configures whether the encoder should escape
+// HTML-sensitive characters (<, >, &) in JSON strings.
+//
+// By default, the standard library escapes these characters for safe
+// embedding in HTML. Set escape to false to disable this behavior
+// when the JSON is not intended for HTML contexts.
+//
+// Example:
+//
+//	data := map[string]string{"html": "<div>test</div>"}
+//
+//	// Default behavior: escapes HTML
+//	json1, _ := Marshal[string](data)
+//	// {"html":"\u003cdiv\u003etest\u003c/div\u003e"}
+//
+//	// Disabled: preserves original characters
+//	json2, _ := Marshal[string](data, WithEscapeHtml(false))
+//	// {"html":"<div>test</div>"}
 func WithEscapeHtml(escape bool) EncodeOption {
 	return func(opt _option) _option {
 		opt.EscapeHtml = gvalue.Ptr(escape)
@@ -56,9 +94,19 @@ func WithEscapeHtml(escape bool) EncodeOption {
 	}
 }
 
-// WithIndent configures indentation for JSON output
-// @param prefix - prefix for each indented line
-// @param indent - indentation string (usually spaces)
+// WithIndent configures the encoder to output indented JSON.
+//
+// Each JSON element begins on a new line that starts with prefix followed
+// by one or more copies of indent according to the nesting depth.
+//
+// Example:
+//
+//	data := map[string]any{"name": "John", "age": 30}
+//	json, _ := Marshal[string](data, WithIndent("", "  "))
+//	// {
+//	//   "age": 30,
+//	//   "name": "John"
+//	// }
 func WithIndent(prefix, indent string) EncodeOption {
 	return func(opt _option) _option {
 		opt.IndentPrefix = gvalue.Ptr(prefix)
@@ -67,13 +115,11 @@ func WithIndent(prefix, indent string) EncodeOption {
 	}
 }
 
-// Decode parses JSON data into the target interface with configured options
-// Applies decoding settings:
-// - DisableUnknownFields: rejects JSON keys not matching struct fields
-// - UseNumber: preserves number precision with json.Number type
-// @param data - raw JSON bytes to decode
-// @param ins - pointer to target decoding structure
-// @return error if decoding fails
+// Decode parses JSON data into the target value with the configured options.
+//
+// The method applies any configured decoding options:
+//   - DisableUnknownFields: returns error for JSON keys not matching struct fields
+//   - UseNumber: preserves number precision with json.Number type
 func (opt _option) Decode(data []byte, ins any) error {
 	buf := bytes.NewReader(data)
 	decoder := json.NewDecoder(buf)
@@ -86,13 +132,11 @@ func (opt _option) Decode(data []byte, ins any) error {
 	return decoder.Decode(ins)
 }
 
-// Encode serializes value to JSON with configured formatting options
-// Applies encoding settings:
-// - EscapeHtml: controls HTML-sensitive characters escaping
-// - Indent: configures output indentation format
-// @param v - value to be serialized
-// @return formatted JSON bytes
-// @return error if encoding fails
+// Encode serializes a value to JSON with the configured formatting options.
+//
+// The method applies any configured encoding options:
+//   - EscapeHtml: controls HTML-sensitive character escaping
+//   - Indent: configures output indentation format
 func (opt _option) Encode(v any) ([]byte, error) {
 	buf := bytes.NewBuffer(nil)
 	encoder := json.NewEncoder(buf)

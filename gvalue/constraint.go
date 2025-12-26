@@ -1,6 +1,7 @@
 // Copyright 2021 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
+
 package gvalue
 
 // Signed is a constraint that permits any signed integer type.
@@ -43,9 +44,7 @@ type Complex interface {
 // If future releases of Go add new ordered types,
 // this constraint will be modified to include them.
 //
-// This type is redundant since Go 1.21 introduced [cmp.Ordered].
-//
-//go:fix inline
+// Deprecated: Use [cmp.Ordered] instead since Go 1.21.
 type Ordered interface {
 	Integer | Float | ~string
 }
