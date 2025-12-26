@@ -44,7 +44,7 @@ jobs:
         run: |
           # Copy custom homepage into the site root
           # The homepage should link to API docs via relative path: ./api/
-          cp site/index.html _site/index.html
+          cp site/* _site/
 
       - name: Copy assets
         run: |
