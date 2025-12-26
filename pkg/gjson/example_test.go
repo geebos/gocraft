@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/geebos/gocraft/gjson"
+	"github.com/geebos/gocraft/pkg/gjson"
 )
 
 func ExampleUnmarshal() {
@@ -227,4 +227,3 @@ func ExampleWithIndent() {
 	//     "b": 2
 	// }
 }
-

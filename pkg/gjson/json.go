@@ -6,7 +6,7 @@ import (
 
 	"github.com/tidwall/gjson"
 
-	"github.com/geebos/gocraft/gvalue"
+	"github.com/geebos/gocraft/pkg/gvalue"
 )
 
 // ErrPathNotFound is returned when a JSON path expression does not match any value.

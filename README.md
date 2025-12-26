@@ -1,11 +1,19 @@
-# gocraft
+<p align="center">
+  <img src="assets/icon/512x512.png" alt="gocraft logo" width="180" height="180">
+</p>
 
-[![Go](https://github.com/geebos/gocraft/actions/workflows/go.yml/badge.svg)](https://github.com/geebos/gocraft/actions/workflows/go.yml)
-[![Go Reference](https://pkg.go.dev/badge/github.com/geebos/gocraft.svg)](https://pkg.go.dev/github.com/geebos/gocraft)
-[![Go Report Card](https://goreportcard.com/badge/github.com/geebos/gocraft)](https://goreportcard.com/report/github.com/geebos/gocraft)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<h1 align="center">gocraft</h1>
 
-Generic wrappers for popular Go libraries — write cleaner, more concise code.
+<p align="center">
+  Generic wrappers for popular Go libraries — write cleaner, more concise code.
+</p>
+
+<p align="center">
+  <a href="https://github.com/geebos/gocraft/actions/workflows/go.yml"><img src="https://github.com/geebos/gocraft/actions/workflows/go.yml/badge.svg" alt="Go"></a>
+  <a href="https://pkg.go.dev/github.com/geebos/gocraft"><img src="https://pkg.go.dev/badge/github.com/geebos/gocraft.svg" alt="Go Reference"></a>
+  <a href="https://goreportcard.com/report/github.com/geebos/gocraft"><img src="https://goreportcard.com/badge/github.com/geebos/gocraft" alt="Go Report Card"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+</p>
 
 📖 **[Documentation](https://geebos.github.io/gocraft/)** | 📦 **[pkg.go.dev](https://pkg.go.dev/github.com/geebos/gocraft)**
 
@@ -26,7 +34,7 @@ go get github.com/geebos/gocraft
 ### gjson - Enhanced JSON Operations
 
 ```go
-import "github.com/geebos/gocraft/gjson"
+import "github.com/geebos/gocraft/pkg/gjson"
 
 // Unmarshal JSON to a typed value
 type User struct {
@@ -46,7 +54,7 @@ jsonStr := gjson.Dumps(user)
 ### gvalue - Generic Value Utilities
 
 ```go
-import "github.com/geebos/gocraft/gvalue"
+import "github.com/geebos/gocraft/pkg/gvalue"
 
 // Create pointers to literal values
 config := &Config{
@@ -65,8 +73,8 @@ zero := gvalue.Zero[int]() // 0
 
 | Package | Description |
 |---------|-------------|
-| [gjson](https://pkg.go.dev/github.com/geebos/gocraft/gjson) | Generic JSON encoding/decoding with path extraction support |
-| [gvalue](https://pkg.go.dev/github.com/geebos/gocraft/gvalue) | Generic value utilities, type constraints, and helper functions |
+| [gjson](https://pkg.go.dev/github.com/geebos/gocraft/pkg/gjson) | Generic JSON encoding/decoding with path extraction support |
+| [gvalue](https://pkg.go.dev/github.com/geebos/gocraft/pkg/gvalue) | Generic value utilities, type constraints, and helper functions |
 
 ## Requirements
 

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 
-	"github.com/geebos/gocraft/gvalue"
+	"github.com/geebos/gocraft/pkg/gvalue"
 )
 
 type _option struct {

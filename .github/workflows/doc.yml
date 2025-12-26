@@ -38,13 +38,19 @@ jobs:
           rm -rf _site
           # Generate gopages output under /api to avoid path issues on GitHub Pages
           mkdir -p _site/api
-          gopages -base /gocraft/api -out _site/api ./...
+          gopages -base /gocraft/api -out _site/api -include-head site/head.html ./...
 
       - name: Add custom homepage
         run: |
           # Copy custom homepage into the site root
           # The homepage should link to API docs via relative path: ./api/
-          cp .github/site/index.html _site/index.html
+          cp site/index.html _site/index.html
+
+      - name: Copy assets
+        run: |
+          # Copy icon assets to the site directory
+          mkdir -p _site/assets/icon
+          cp assets/icon/* _site/assets/icon/
 
       # Optional: copy additional static documentation (guides, tutorials, etc.)
       # - name: Add guides

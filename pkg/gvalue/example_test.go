@@ -3,7 +3,7 @@ package gvalue_test
 import (
 	"fmt"
 
-	"github.com/geebos/gocraft/gvalue"
+	"github.com/geebos/gocraft/pkg/gvalue"
 )
 
 func ExampleZero() {
