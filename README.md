@@ -9,9 +9,10 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/geebos/gocraft/actions/workflows/go.yml"><img src="https://github.com/geebos/gocraft/actions/workflows/go.yml/badge.svg" alt="Go"></a>
+  <a href="https://github.com/geebos/gocraft/actions/workflows/ci.yml"><img src="https://github.com/geebos/gocraft/actions/workflows/ci.yml/badge.svg" alt="Go"></a>
   <a href="https://pkg.go.dev/github.com/geebos/gocraft"><img src="https://pkg.go.dev/badge/github.com/geebos/gocraft.svg" alt="Go Reference"></a>
   <a href="https://goreportcard.com/report/github.com/geebos/gocraft"><img src="https://goreportcard.com/badge/github.com/geebos/gocraft" alt="Go Report Card"></a>
+  <a href="https://codecov.io/gh/geebos/gocraft"><img src="https://codecov.io/gh/geebos/gocraft/branch/main/graph/badge.svg" alt="codecov"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
 </p>
 
