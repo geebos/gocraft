@@ -42,9 +42,10 @@ jobs:
 
       - name: Add custom homepage
         run: |
-          # Copy custom homepage into the site root
+          # Copy custom homepage into the site root and overide default godoc style.css
           # The homepage should link to API docs via relative path: ./api/
-          cp site/* _site/
+          cp site/index.html _site/index.html
+          cp site/style.css _site/api/lib/godoc/style.css
 
       - name: Copy assets
         run: |

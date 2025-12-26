@@ -866,11 +866,6 @@ div#topbar > .container {
     width: 100%;
 }
 
-div#page.wide > .container,
-div#topbar.wide > .container {
-    max-width: none;
-}
-
 div#plusone {
     float: right;
     clear: right;
@@ -1571,6 +1566,18 @@ a.error {
         padding: 0 2.5rem;
     }
 }
+
+/* Note: Wide mode styles removed to prevent overriding responsive container widths.
+ * The responsive container settings above provide optimal reading experience
+ * across all screen sizes. If full-width layout is needed, it should be
+ * implemented with a different approach that doesn't conflict with responsive design.
+ *
+ * Original wide mode styles (removed):
+ * div#page.wide > .container,
+ * div#topbar.wide > .container {
+ *     max-width: none;
+ * }
+ */
 
 @media (max-width: 43.75em) {
     body {
