@@ -21,7 +21,6 @@
 
 - **Generic Wrappers**: Provide type-safe generic wrappers for common open-source libraries
 - **Cleaner Code**: Reduce boilerplate and make your code more readable
-- **Zero Cost**: Minimal overhead with compile-time type safety
 
 ## Quick Start
 
