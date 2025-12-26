@@ -37,7 +37,7 @@ jobs:
           rm -rf _site
           # Generate gopages output under /api to avoid path issues on GitHub Pages
           mkdir -p _site/api
-          gopages -out _site/api ./...
+          gopages -base /gocraft/api -out _site/api ./...
 
       - name: Add custom homepage
         run: |
