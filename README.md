@@ -68,12 +68,48 @@ max := gvalue.IfElse(a > b, a, b)
 zero := gvalue.Zero[int]() // 0
 ```
 
+### gweb - Generic HTTP Handler Wrappers
+
+```go
+import (
+    "github.com/geebos/gocraft/pkg/gweb"
+    "github.com/geebos/gocraft/pkg/gweb/ggin"
+)
+
+// Create a handler wrapper with custom processors
+wrapper := gweb.NewHandlerWrapper(
+    gweb.WithRequestProcessor(customRequestProcessor),
+    gweb.WithResponseProcessor(customResponseProcessor),
+)
+
+// Define type-safe handlers
+type CreateUserRequest struct {
+    Name  string `json:"name" binding:"required"`
+    Email string `json:"email" binding:"required,email"`
+}
+
+type CreateUserResponse struct {
+    ID    int    `json:"id"`
+    Name  string `json:"name"`
+    Email string `json:"email"`
+}
+
+func createUserHandler(ctx context.Context, c *gin.Context, req *CreateUserRequest) (*CreateUserResponse, error) {
+    // Business logic here
+    return &CreateUserResponse{ID: 1, Name: req.Name, Email: req.Email}, nil
+}
+
+// Use in routes
+router.POST("/users", ggin.Handler[CreateUserRequest, CreateUserResponse](wrapper, createUserHandler))
+```
+
 ## Packages
 
 | Package | Description |
 |---------|-------------|
 | [gjson](https://pkg.go.dev/github.com/geebos/gocraft/pkg/gjson) | Generic JSON encoding/decoding with path extraction support |
 | [gvalue](https://pkg.go.dev/github.com/geebos/gocraft/pkg/gvalue) | Generic value utilities, type constraints, and helper functions |
+| [gweb](https://pkg.go.dev/github.com/geebos/gocraft/pkg/gweb) | Generic HTTP handler wrappers with customizable request/response processors |
 
 ## Requirements
 
