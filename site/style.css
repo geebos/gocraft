@@ -347,6 +347,8 @@ nav {
     line-height: 1.7;
     overflow-x: auto;
     text-align: left;
+    border: none;
+    background: transparent;
 }
 
 .code-content .keyword { color: #8250df; }
@@ -592,15 +594,16 @@ textarea {
 pre,
 code {
     font-family: 'JetBrains Mono', Menlo, monospace;
-    font-size: 0.875rem;
+    font-size: 0.9rem;
+    line-height: 1.7;
 }
 
 pre {
-    line-height: 1.4;
+    line-height: 1.7;
     overflow-x: auto;
     background: var(--code-bg);
     padding: 0.625rem;
-    border-radius: 0.3125rem;
+    border-radius: 0;
     border: 2px solid var(--border-color);
     color: var(--text-primary);
 }
@@ -643,7 +646,8 @@ pre .ln {
 
 .search-nav {
     margin-left: 1.25rem;
-    font-size: 0.875rem;
+    font-size: 0.95rem;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     column-gap: 1.25rem;
     column-fill: auto;
     column-width: 14rem;
@@ -688,6 +692,9 @@ li {
     max-width: 50rem;
     word-wrap: break-word;
     color: var(--text-primary);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
 p,
@@ -705,14 +712,15 @@ h4,
     margin: 1.25rem 0 1.25rem;
     padding: 0;
     color: var(--go-blue);
-    font-weight: bold;
+    font-weight: 600;
     font-family: 'JetBrains Mono', monospace;
 }
 
 h1 {
     font-size: 1.75rem;
-    line-height: 1;
+    line-height: 1.3;
     color: var(--text-primary);
+    font-weight: 700;
 }
 
 h1 .text-muted {
@@ -723,8 +731,8 @@ h2 {
     font-size: 1.25rem;
     background: var(--bg-secondary);
     padding: 0.5rem;
-    line-height: 1.25;
-    font-weight: normal;
+    line-height: 1.4;
+    font-weight: 600;
     overflow: auto;
     overflow-wrap: break-word;
     border: 2px solid var(--border-color);
@@ -732,13 +740,14 @@ h2 {
 }
 
 h2 a {
-    font-weight: bold;
+    font-weight: 700;
     color: var(--go-blue);
 }
 
 h3 {
     font-size: 1.25rem;
-    line-height: 1.25;
+    line-height: 1.4;
+    font-weight: 600;
     overflow: auto;
     overflow-wrap: break-word;
     color: var(--text-primary);
@@ -751,6 +760,7 @@ h4 {
 
 h4 {
     font-size: 1rem;
+    font-weight: 600;
 }
 
 .rootHeading {
@@ -776,8 +786,10 @@ dd {
 
 dl,
 dd {
-    font-size: 0.875rem;
+    font-size: 1rem;
     color: var(--text-primary);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    line-height: 1.6;
 }
 
 div#nav table td {
@@ -849,18 +861,9 @@ div#topbar > .container {
     margin-left: auto;
     margin-right: auto;
     padding: 0 1.25rem;
-    max-width: 59.38rem;
-}
-
-div#page > .container {
-    /* Center container for better document reading */
-    max-width: 65rem;
-    margin: 0 auto;
-}
-
-div#topbar > .container,
-div#page > .container {
-    max-width: 65rem;
+    /* Responsive container width for optimal reading experience */
+    max-width: min(75rem, 90vw);
+    width: 100%;
 }
 
 div#page.wide > .container,
@@ -1393,7 +1396,7 @@ div#playground .output {
     width: auto;
     margin: 1.25rem;
     padding: 0.625rem;
-    border-radius: 0.3125rem;
+    border-radius: 0;
 }
 
 #content .code,
@@ -1545,6 +1548,28 @@ a.error {
     input#search {
         font-size: 0.875rem;
     }
+
+    div#page > .container,
+    div#topbar > .container {
+        max-width: min(60rem, 95vw);
+        padding: 0 1.5rem;
+    }
+}
+
+@media (min-width: 62.5em) and (max-width: 90em) {
+    div#page > .container,
+    div#topbar > .container {
+        max-width: min(70rem, 88vw);
+        padding: 0 2rem;
+    }
+}
+
+@media (min-width: 90em) {
+    div#page > .container,
+    div#topbar > .container {
+        max-width: 75rem;
+        padding: 0 2.5rem;
+    }
 }
 
 @media (max-width: 43.75em) {
@@ -1562,8 +1587,10 @@ a.error {
         font-size: 0.866rem;
     }
 
-    div#page > .container {
-        padding: 0 0.625rem;
+    div#page > .container,
+    div#topbar > .container {
+        padding: 0 1rem;
+        max-width: 100%;
     }
 
     div#topbar {
