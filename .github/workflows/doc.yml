@@ -1,4 +1,4 @@
-name: Build & Deploy Go Docs (gopages)
+name: Build & Deploy Docs (gopages + custom home)
 
 on:
   push:
@@ -18,10 +18,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Go
+      - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version: "stable"
@@ -31,14 +31,30 @@ jobs:
         run: |
           go install github.com/johnstarich/go/gopages@latest
 
-      - name: Generate docs site
+      - name: Generate API documentation
         run: |
-          # 输出目录可随意改，只要与 upload 步骤一致即可
-          gopages -out _site ./...
+          # Clean previous site output
+          rm -rf _site
+          # Generate gopages output under /api to avoid path issues on GitHub Pages
+          mkdir -p _site/api
+          gopages -out _site/api ./...
+
+      - name: Add custom homepage
+        run: |
+          # Copy custom homepage into the site root
+          # The homepage should link to API docs via relative path: ./api/
+          cp .github/site/index.html _site/index.html
+
+      # Optional: copy additional static documentation (guides, tutorials, etc.)
+      # - name: Add guides
+      #   run: |
+      #     mkdir -p _site/docs
+      #     cp -r docs/* _site/docs/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          # Upload the entire site directory (homepage + API docs)
           path: _site
 
   deploy:
