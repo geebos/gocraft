@@ -92,16 +92,14 @@
                     <span class="code-dot yellow"></span>
                     <span class="code-dot green"></span>
                 </div>
-                <pre class="code-content"><span class="comment">// Type-safe JSON parsing</span>
-<span class="keyword">type</span> <span class="type">User</span> <span class="keyword">struct</span> {
-    Name  <span class="type">string</span> <span class="string">`json:"name"`</span>
-    Email <span class="type">string</span> <span class="string">`json:"email"`</span>
-}
+                <pre class="code-content"><span class="comment">// Functional slice operations</span>
+numbers := []<span class="type">int</span>{1, 2, 3, 4, 5}
+doubled := gslice.<span class="func">Map</span>(numbers, <span class="keyword">func</span>(n <span class="type">int</span>) <span class="type">int</span> { <span class="keyword">return</span> n * 2 })
+evens := gslice.<span class="func">Filter</span>(numbers, <span class="keyword">func</span>(n <span class="type">int</span>) <span class="type">bool</span> { <span class="keyword">return</span> n%2 == 0 })
 
-user, err := gjson.<span class="func">Unmarshal</span>[<span class="type">User</span>](jsonData)
-
-<span class="comment">// Extract value from JSON path</span>
-email, _ := gjson.<span class="func">UnmarshalFromPath</span>[<span class="type">string</span>](data, <span class="string">"user.email"</span>)</pre>
+<span class="comment">// Set operations</span>
+union := gslice.<span class="func">Union</span>(s1, s2, s3)
+intersection := gslice.<span class="func">Intersection</span>(s1, s2, s3)</pre>
             </div>
         </div>
     </section>
@@ -183,6 +181,23 @@ email, _ := gjson.<span class="func">UnmarshalFromPath</span>[<span class="type"
                         <span class="func-tag">IfElse</span>
                         <span class="func-tag">Equal</span>
                         <span class="func-tag">Less</span>
+                    </div>
+                </div>
+                <div class="package-card">
+                    <div class="package-header">
+                        <span class="package-name">gslice</span>
+                        <span class="package-tag">Slice Operations</span>
+                    </div>
+                    <p class="package-desc">
+                        Generic slice and array operations including map, filter, reduce, find, sort, and set operations (union, intersection, difference) with type-safe implementations.
+                    </p>
+                    <div class="package-functions">
+                        <span class="func-tag">Map</span>
+                        <span class="func-tag">Filter</span>
+                        <span class="func-tag">Reduce</span>
+                        <span class="func-tag">Sort</span>
+                        <span class="func-tag">Union</span>
+                        <span class="func-tag">Intersection</span>
                     </div>
                 </div>
                 <div class="package-card">

@@ -35,3 +35,39 @@ func Equal[T comparable](l, r T) bool {
 func Less[T Ordered](l, r T) bool {
 	return l < r
 }
+
+// LT reports whether l is less than r.
+//
+// LT is an alias for Less, provided for consistency with other comparison functions.
+func LT[T Ordered](l, r T) bool {
+	return l < r
+}
+
+// LTE reports whether l is less than or equal to r.
+//
+// LTE works with any ordered type, including integers, floats, and strings.
+func LTE[T Ordered](l, r T) bool {
+	return l <= r
+}
+
+// GT reports whether l is greater than r.
+//
+// GT works with any ordered type, including integers, floats, and strings.
+func GT[T Ordered](l, r T) bool {
+	return l > r
+}
+
+// GTE reports whether l is greater than or equal to r.
+//
+// GTE works with any ordered type, including integers, floats, and strings.
+func GTE[T Ordered](l, r T) bool {
+	return l >= r
+}
+
+// EQ reports whether l is equal to r.
+//
+// EQ is an alias for Equal, provided for consistency with other comparison functions.
+// EQ uses the == operator for comparison, so it only works with comparable types.
+func EQ[T comparable](l, r T) bool {
+	return l == r
+}

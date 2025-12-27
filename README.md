@@ -69,6 +69,40 @@ max := gvalue.IfElse(a > b, a, b)
 zero := gvalue.Zero[int]() // 0
 ```
 
+### gslice - Generic Slice Operations
+
+```go
+import (
+    "github.com/geebos/gocraft/pkg/gslice"
+    "github.com/geebos/gocraft/pkg/gvalue"
+    "cmp"
+)
+
+// Map, Filter, Reduce
+numbers := []int{1, 2, 3, 4, 5}
+doubled := gslice.Map(numbers, func(n int) int { return n * 2 })
+evens := gslice.Filter(numbers, func(n int) bool { return n%2 == 0 })
+sum := gslice.Reduce(numbers, 0, func(acc, n int) int { return acc + n })
+
+// Find, Any, All
+value, found := gslice.Find(numbers, func(n int) bool { return n > 3 })
+hasEven := gslice.Any(numbers, func(n int) bool { return n%2 == 0 })
+allPositive := gslice.All(numbers, func(n int) bool { return n > 0 })
+
+// Sort (clone) and StealSort (in-place)
+sorted := gslice.Sort(numbers, cmp.Compare[int])
+gslice.StealSort(numbers, cmp.Compare[int])
+
+// Set operations
+s1, s2, s3 := []int{1, 2, 3}, []int{2, 3, 4}, []int{3, 4, 5}
+union := gslice.Union(s1, s2, s3)           // [1, 2, 3, 4, 5]
+intersection := gslice.Intersection(s1, s2, s3) // [3]
+difference := gslice.Difference(s1, s2, s3)     // [1]
+
+// Use with gvalue comparison functions
+greaterThan3 := gslice.Filter(numbers, gslice.CmpWith(gvalue.GT[int], 3))
+```
+
 ### gweb - Generic HTTP Handler Wrappers
 
 ```go
@@ -110,6 +144,7 @@ router.POST("/users", ggin.Handler[CreateUserRequest, CreateUserResponse](wrappe
 |---------|-------------|
 | [gjson](https://pkg.go.dev/github.com/geebos/gocraft/pkg/gjson) | Generic JSON encoding/decoding with path extraction support |
 | [gvalue](https://pkg.go.dev/github.com/geebos/gocraft/pkg/gvalue) | Generic value utilities, type constraints, and helper functions |
+| [gslice](https://pkg.go.dev/github.com/geebos/gocraft/pkg/gslice) | Generic slice and array operations (map, filter, reduce, sort, set operations) |
 | [gweb](https://pkg.go.dev/github.com/geebos/gocraft/pkg/gweb) | Generic HTTP handler wrappers with customizable request/response processors |
 
 ## Requirements
