@@ -9,7 +9,6 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/geebos/gocraft/pkg/gweb"
 	"github.com/gin-gonic/gin"
 	. "github.com/smartystreets/goconvey/convey"
 )
@@ -30,7 +29,7 @@ func TestHandler(t *testing.T) {
 		}
 
 		Convey("successful request and response", func() {
-			wrapper := gweb.NewHandlerWrapper()
+			wrapper := NewHandlerWrapper()
 			handler := Handler(
 				wrapper,
 				func(ctx context.Context, c *gin.Context, req *TestRequest) (*TestResponse, error) {
@@ -67,7 +66,7 @@ func TestHandler(t *testing.T) {
 		})
 
 		Convey("request binding error", func() {
-			wrapper := gweb.NewHandlerWrapper()
+			wrapper := NewHandlerWrapper()
 			handler := Handler(
 				wrapper,
 				func(ctx context.Context, c *gin.Context, req *TestRequest) (*TestResponse, error) {
@@ -96,7 +95,7 @@ func TestHandler(t *testing.T) {
 		})
 
 		Convey("business handler returns error", func() {
-			wrapper := gweb.NewHandlerWrapper()
+			wrapper := NewHandlerWrapper()
 			businessErr := errors.New("business error")
 			handler := Handler(
 				wrapper,
@@ -126,8 +125,8 @@ func TestHandler(t *testing.T) {
 
 		Convey("custom request processor", func() {
 			customReqErr := errors.New("custom request error")
-			wrapper := gweb.NewHandlerWrapper(
-				gweb.WithRequestProcessor(func(ctx context.Context, c *gin.Context, req any) error {
+			wrapper := NewHandlerWrapper(
+				WithRequestProcessor(func(ctx context.Context, c *gin.Context, req any) error {
 					return customReqErr
 				}),
 			)
@@ -156,8 +155,8 @@ func TestHandler(t *testing.T) {
 		})
 
 		Convey("custom response processor", func() {
-			wrapper := gweb.NewHandlerWrapper(
-				gweb.WithResponseProcessor(func(ctx context.Context, c *gin.Context, resp any, err error) {
+			wrapper := NewHandlerWrapper(
+				WithResponseProcessor(func(ctx context.Context, c *gin.Context, resp any, err error) {
 					if err != nil {
 						c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 						return
